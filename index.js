@@ -14,7 +14,7 @@ app.use(express.json())
 
 
 const uri = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.1ivadd4.mongodb.net/?retryWrites=true&w=majority`;
-console.log(uri)
+
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
 const dbConnect = async() => {
@@ -32,17 +32,20 @@ app.get('/', (req, res) => {
 })
 
 const servicesCollection = client.db('servicesDB').collection('servicesList')
+const reviewsColleciton = client.db('servicesDB').collection('reviewList')
 
-// app.post('/services', async(req, res) => {
-//     try {
-//         const result = await servicesCollection.insertOne()
-//         res.send(result)
-//         console.log(result)
-//     }
-//     catch(error){
-//         console.log(error.name.bgRed, error.message.bold)
-//     }
-// })
+app.post('/add-review', async(req, res) => {
+    try {
+        const review = req.body
+        console.log(review)
+        const result = await reviewsColleciton.insertOne(review)
+        res.send(result)
+        console.log(result)
+    }
+    catch(error){
+        console.log(error.name.bgRed, error.message.bold)
+    }
+})
 app.get('/services', async(req, res) => {
     try {
        const limit = req.headers.limit
