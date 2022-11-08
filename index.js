@@ -78,9 +78,9 @@ app.get('/add-review', async(req, res) => {
 app.get('/services', async(req, res) => {
     try {
        const limit = req.headers.limit
-       
+       const sort = {_id: -1} 
         const query = {}
-        const cursor = servicesCollection.find(query).limit(parseInt(limit))
+        const cursor = servicesCollection.find(query).limit(parseInt(limit)).sort(sort)
         const result = await cursor.toArray()
         res.send(result)
     }
