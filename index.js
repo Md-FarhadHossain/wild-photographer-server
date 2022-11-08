@@ -99,6 +99,16 @@ app.get('/services/:id', async(req, res) => {
         console.log(error.name.bgRed, error.message.bold)
     }
 })
+app.post('/services', async(req, res) => {
+   try {
+    
+    const result = await servicesCollection.insertOne(req.body)
+    res.send(result)
+   }
+   catch(error){
+    console.log(error.name.bgRed, error.message.bold)
+}
+})
 app.delete('/add-review/:id', async(req, res) => {
     try {
         const id = req.params.id
