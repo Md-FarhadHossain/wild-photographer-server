@@ -46,6 +46,21 @@ app.post('/add-review', async(req, res) => {
         console.log(error.name.bgRed, error.message.bold)
     }
 })
+app.get('/add-review', async(req, res) => {
+    try{
+        let query = {}
+        if(req.query.email){
+            query = { email: req.query.email}
+        }
+        const cursor = reviewsColleciton.find(query)
+        const result = await cursor.toArray()
+        res.send(result)
+    }
+    catch(error){
+        console.log(error.name.bgRed, error.message.bold)
+    }
+})
+
 app.get('/services', async(req, res) => {
     try {
        const limit = req.headers.limit
