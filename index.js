@@ -60,7 +60,21 @@ app.get('/add-review', async(req, res) => {
         console.log(error.name.bgRed, error.message.bold)
     }
 })
+// app.get('/add-review/:id', async(req, res) => {
+//     try {
+//         let query = {}
 
+//         if(req.query.email){
+//             query = { email: req.query.email}
+//         }
+//         const cursor = reviewsColleciton.find(query)
+//         const result = await cursor.toArray()
+//         res.send(result)
+//     }
+//     catch(error){
+//         console.log(error.name.bgRed, error.message.bold)
+//     }
+// })
 app.get('/services', async(req, res) => {
     try {
        const limit = req.headers.limit
@@ -79,6 +93,18 @@ app.get('/services/:id', async(req, res) => {
     try {
         const id = req.params.id
         const result = await servicesCollection.findOne({ _id: ObjectId(id) })
+        res.send(result)
+    }
+    catch(error){
+        console.log(error.name.bgRed, error.message.bold)
+    }
+})
+app.delete('/add-review/:id', async(req, res) => {
+    try {
+        const id = req.params.id
+        const query = {_id: ObjectId(id)}
+        const result = await reviewsColleciton.deleteOne(query)
+        console.log(result)
         res.send(result)
     }
     catch(error){
