@@ -52,6 +52,9 @@ app.get('/add-review', async(req, res) => {
         if(req.query.email){
             query = { email: req.query.email}
         }
+        if(req.query.serviceId){
+            query = { serviceId: req.query.serviceId}
+        }
         const cursor = reviewsColleciton.find(query)
         const result = await cursor.toArray()
         res.send(result)
@@ -60,6 +63,7 @@ app.get('/add-review', async(req, res) => {
         console.log(error.name.bgRed, error.message.bold)
     }
 })
+
 // app.get('/add-review/:id', async(req, res) => {
 //     try {
 //         let query = {}
