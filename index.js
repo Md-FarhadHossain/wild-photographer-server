@@ -131,6 +131,17 @@ app.get('/add-review/:id', async(req, res) => {
         console.log(error.name.bgRed, error.message.bold)
     }
 })
+app.patch('/add-review/:id', async(req, res) => {
+    try {
+        const id = req.params.id
+       const result = await reviewsColleciton.updateOne({_id: ObjectId(id)}, {$set: req.body})
+       res.send(result)
+
+    }
+    catch(error){
+        console.log(error.name.bgRed, error.message.bold)
+    }
+})
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`)
 })
