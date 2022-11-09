@@ -18,6 +18,22 @@ const client = new MongoClient(uri, {
   serverApi: ServerApiVersion.v1,
 });
 
+const verifyJWT = (req, res, next) => {
+    const authHeaders = req.headers.authorization
+    if(!authHeaders) {
+        res.status(401).send({message: 'Unauthorized access'});
+    }
+    const token = authHeaders.split(' ')[1]
+    console.log(token)
+    jwt.verify(token,process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+        if(err){
+            res.status(401).send({message: 'Unauthorized access'});
+        }
+        req.decoded = decoded
+        next()
+    })
+}
+
 const dbConnect = async () => {
   try {
     await client.connect();
@@ -45,8 +61,13 @@ app.post("/add-review", async (req, res) => {
     console.log(error.name.bgRed, error.message.bold);
   }
 });
-app.get("/add-review", async (req, res) => {
+app.get("/add-review",verifyJWT, async (req, res) => {
   try {
+    const decoded = req.decoded
+    if(decoded.email !== req.query.email){
+        res.status(401).send({message: 'Unauthorized access'});
+    }
+
     let query = {};
     if (req.query.email) {
       query = { email: req.query.email };
@@ -123,7 +144,7 @@ app.delete("/add-review/:id", async (req, res) => {
 });
 app.get("/add-review/:id", async (req, res) => {
     try {
-      console.log(req.headers.authorization)
+      
     const id = req.params.id;
     const result = await reviewsColleciton.findOne({ _id: ObjectId(id) });
     res.send(result);
