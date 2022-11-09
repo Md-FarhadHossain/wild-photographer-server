@@ -121,6 +121,16 @@ app.delete('/add-review/:id', async(req, res) => {
         console.log(error.name.bgRed, error.message.bold)
     }
 })
+app.get('/add-review/:id', async(req, res) => {
+    try {
+        const id = req.params.id
+        const result = await reviewsColleciton.findOne({ _id: ObjectId(id) })
+        res.send(result)
+    }
+    catch(error){
+        console.log(error.name.bgRed, error.message.bold)
+    }
+})
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`)
 })
