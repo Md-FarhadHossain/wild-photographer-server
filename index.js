@@ -64,9 +64,9 @@ app.post("/add-review", async (req, res) => {
 app.get("/add-review",verifyJWT, async (req, res) => {
   try {
     const decoded = req.decoded
-    if(decoded.email !== req.query.email){
-        res.status(401).send({message: 'Unauthorized access'});
-    }
+    // if(decoded.email !== req.query.email){
+    //     res.status(403).send({message: 'Unauthorized access'});
+    // }
 
     let query = {};
     if (req.query.email) {
@@ -100,6 +100,7 @@ app.get("/add-review",verifyJWT, async (req, res) => {
 // })
 app.get("/services", async (req, res) => {
   try {
+    
     const limit = req.headers.limit;
     const sort = { _id: -1 };
     const query = {};
@@ -114,7 +115,7 @@ app.get("/services", async (req, res) => {
   }
 });
 
-app.get("/services/:id", async (req, res) => {
+app.get("/services/:id",verifyJWT, async (req, res) => {
   try {
     const id = req.params.id;
     const result = await servicesCollection.findOne({ _id: ObjectId(id) });
